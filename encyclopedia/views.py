@@ -19,12 +19,17 @@ def entry(request, title):
 import random
 
 def random_entry(request):
+     #get entries
      entries = util.list_entries()
      
+     # generate random number for legnth of entries list
      index = random.randint(0,len(entries) - 1)
-     title = entries[index]
+
+     #extract the random entry
+     entry = entries[index]
      
-     entry(request,title)
+     return render(request, "encyclopedia/entry.html", {
+     "entry": util.convert(entry)})
     
 
      
