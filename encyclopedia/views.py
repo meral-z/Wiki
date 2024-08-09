@@ -14,7 +14,7 @@ def entry(request, title):
     
     return render(request, "encyclopedia/entry.html", {
     "entry": util.convert(util.get_entry(title)),
-    "title":title})
+    "title":title.lower()})
 
 import random
 
@@ -31,6 +31,26 @@ def rand(request):
     return render(request, "encyclopedia/entry.html", {
     "entry": util.convert(util.get_entry(title)),
     "title": title })
+
+def search(request):
+     if request.method == "POST":
+         search = request.POST.get('search').lower()
+         entries = util.list_entries()
+         found = []
+         for ent in entries:
+            if ent.lower() == search:
+                return render(request, "encyclopedia/entry.html", {
+    "entry": util.convert(util.get_entry(ent)),
+    "title":ent})
+            elif search in ent.lower():
+                 found.append(ent)
+         if not found:
+             return render(request, "encyclopedia/error.html")
+         return render(request, "encyclopedia/index.html", {
+        "entries": found
+    })
+                
+                 
      
     
 
